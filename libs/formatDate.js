@@ -31,6 +31,7 @@ const formatDate = (date) => {
     ? dateArray.splice(2, 0, new Date().getFullYear().toString())
     : dateArray;
   const editDateArray = dateArray.slice(0, 3).concat(timeArray);
+  return editDateArray.map((i) => typeof i).join(',')
   return new Date(
     Number(editDateArray[2]),
     monthList.indexOf(editDateArray[1]),
