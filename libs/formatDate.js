@@ -1,5 +1,5 @@
 const formatDate = (date) => {
-  const dateArray = date.replace(/@ /g, '').split(' ');
+  const dateArray = date.replace(/@ /g, '').replace(/,/g, '').split(' ');
   const monthList = [
     'Jan',
     'Feb',
@@ -31,14 +31,14 @@ const formatDate = (date) => {
     ? dateArray.splice(2, 0, new Date().getFullYear().toString())
     : dateArray;
   const editDateArray = dateArray.slice(0, 3).concat(timeArray);
-  const newDate = new Date(
+  return editDateArray.join(',')
+  return new Date(
     Number(editDateArray[2]),
-    monthList.indexOf(editDateArray[1]) + 1,
+    monthList.indexOf(editDateArray[1]),
     Number(editDateArray[0]),
     editDateArray[3],
     editDateArray[4]
-  );
-  return newDate.toUTCString();
+  ).toUTCString();
 };
 
 export default formatDate;
