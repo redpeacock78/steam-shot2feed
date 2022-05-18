@@ -1,3 +1,5 @@
+import datefns from 'date-fns';
+
 const formatDate = (date) => {
   const dateArray = date.replace(/@ /g, '').replace(/,/g, '').split(' ');
   const monthList = [
@@ -31,14 +33,15 @@ const formatDate = (date) => {
     ? dateArray.splice(2, 0, new Date().getFullYear().toString())
     : dateArray;
   const editDateArray = dateArray.slice(0, 3).concat(timeArray);
-  return editDateArray.map((i) => typeof i).join(',')
-  return new Date(
-    Number(editDateArray[2]),
-    monthList.indexOf(editDateArray[1]),
-    Number(editDateArray[0]),
-    editDateArray[3],
-    editDateArray[4]
-  ).toUTCString();
+  return datefns
+    .parse(
+      `${Number(editDateArray[2])}-${monthList.indexOf(
+        editDateArray[1]
+      )}-${Number(editDateArray[0])} ${editDateArray[3]}:${editDateArray[4]}`,
+      'yyyy-MM-dd HH:mm',
+      new Date()
+    )
+    .toUTCString();
 };
 
 export default formatDate;
