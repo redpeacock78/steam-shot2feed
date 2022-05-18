@@ -1,5 +1,5 @@
 const formatDate = (date) => {
-  const dateArray = date.replace(/@ /g, '').replace(/,/g, '').split(' ');
+  const dateArray = date.replace(/@ /g, '').split(' ');
   const monthList = [
     'Jan',
     'Feb',

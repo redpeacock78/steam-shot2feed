@@ -28,7 +28,7 @@ const scrape = async (param) => {
           : desc.push('');
         url$(
           '#rightContents > div > div:nth-child(1) > div:nth-child(3) > div.detailsStatsContainerRight > div:nth-child(2)'
-        ).map((i, e) => dates.push($(e).text()));
+        ).map((i, e) => dates.push(formatDate($(e).text())));
         url$('#ig_bottom > div.mediaTop > div.actualmediactn').map((i, e) =>
           imageUrls.push($(e).find('a').attr('href'))
         );
