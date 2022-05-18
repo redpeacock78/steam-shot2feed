@@ -1,10 +1,10 @@
 import ky from 'ky-universal';
+import datefns from 'date-fns';
 import * as cheerio from 'cheerio';
-import formatDate from './formatDate.js';
 
 const scrape = async (param) => {
   const client = ky.create({
-    headers: { 'Accept-Language': 'en,en-US;q=0.9,en;q=0.8' },
+    headers: { 'Accept-Language': 'ja,en-US;q=0.9,en;q=0.8' },
   });
   try {
     const detailUrls = [];
@@ -28,7 +28,38 @@ const scrape = async (param) => {
           : desc.push('');
         url$(
           '#rightContents > div > div:nth-child(1) > div:nth-child(3) > div.detailsStatsContainerRight > div:nth-child(2)'
-        ).map((i, e) => dates.push(formatDate($(e).text())));
+        ).map((i, e) =>
+          $(e).text().match(/年/)
+            ? dates.push(
+                datefns
+                  .parse(
+                    $(e)
+                      .text()
+                      .replace(/年/, '-')
+                      .replace(/月/, '-')
+                      .replace(/時/, ':')
+                      .replace(/日/, '')
+                      .replace(/分/, ''),
+                    'yyyy-MM-dd HH:mm',
+                    new Date()
+                  )
+                  .toUTCString()
+              )
+            : dates.push(
+                datefns
+                  .parse(
+                    `${new Date().getFullYear().toString()}年${$(e).text()}`
+                      .replace(/年/, '-')
+                      .replace(/月/, '-')
+                      .replace(/時/, ':')
+                      .replace(/日/, '')
+                      .replace(/分/, ''),
+                    'yyyy-MM-dd HH:mm',
+                    new Date()
+                  )
+                  .toUTCString()
+              )
+        );
         url$('#ig_bottom > div.mediaTop > div.actualmediactn').map((i, e) =>
           imageUrls.push($(e).find('a').attr('href'))
         );
