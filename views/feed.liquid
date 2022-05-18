@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ username }}'s Steam screenshots</title>
+    <link>https://steamcommunity.com/id/{{ username }}</link>
+    <link rel="icon" href="https://steamcommunity.com/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="https://steamcommunity.com/favicon.ico" type="image/x-icon"/>
+    <description><![CDATA[{{ username }}'s Steam screenshots]]></description>
+    <lastBuildDate>{{ date }}</lastBuildDate>
+    {% for item in items %}
+    <item>
+      <title>{% if item.desc != '' %}<![CDATA[{{ item.desc }}]]>{% endif %}</title>
+      <link><![CDATA[{{ item.img }}]]></link>
+      <description>
+        <![CDATA[<a href="{{ item.url }}"><img src="{{ item.img }}"/></a>]]>
+      </description>
+      <guid><![CDATA[{{ item.url }}]]></guid>
+      <pubDate>{{ item.date }}</pubDate>
+      <author><![CDATA[{{ username }}]]></author>
+    </item>
+    {% endfor %}
+  </channel>
+</rss>
