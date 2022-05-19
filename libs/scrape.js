@@ -1,6 +1,6 @@
 import ky from 'ky-universal';
-import datefns from 'date-fns';
 import * as cheerio from 'cheerio';
+import dateFormat from './dateFormat.js';
 
 const scrape = async (param) => {
   const client = ky.create({
@@ -28,38 +28,7 @@ const scrape = async (param) => {
           : desc.push('');
         url$(
           '#rightContents > div > div:nth-child(1) > div:nth-child(3) > div.detailsStatsContainerRight > div:nth-child(2)'
-        ).map((i, e) =>
-          $(e).text().match(/年/)
-            ? dates.push(
-                datefns
-                  .parse(
-                    $(e)
-                      .text()
-                      .replace(/年/, '-')
-                      .replace(/月/, '-')
-                      .replace(/時/, ':')
-                      .replace(/日/, '')
-                      .replace(/分/, ''),
-                    'yyyy-MM-dd HH:mm',
-                    new Date()
-                  )
-                  .toUTCString()
-              )
-            : dates.push(
-                datefns
-                  .parse(
-                    `${new Date().getFullYear().toString()}年${$(e).text()}`
-                      .replace(/年/, '-')
-                      .replace(/月/, '-')
-                      .replace(/時/, ':')
-                      .replace(/日/, '')
-                      .replace(/分/, ''),
-                    'yyyy-MM-dd HH:mm',
-                    new Date()
-                  )
-                  .toUTCString()
-              )
-        );
+        ).map((i, e) => dates.push(dateFormat($(e).text())));
         url$('#ig_bottom > div.mediaTop > div.actualmediactn').map((i, e) =>
           imageUrls.push($(e).find('a').attr('href'))
         );
